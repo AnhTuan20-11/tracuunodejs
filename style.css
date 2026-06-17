@@ -1,0 +1,352 @@
+/* --- Thiết lập nền tảng toàn trang --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  background-color: #f4f6f9; /* Nền xám nhạt dịu mắt */
+  color: #333;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- Tiêu đề chính --- */
+h2 {
+  text-align: center;
+  color: #1e293b;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- Khung Card bao bọc bảng --- */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ hiện đại */
+  padding: 24px;
+  overflow-x: auto; /* Cuộn ngang mượt mà trên điện thoại */
+}
+
+/* --- Thiết kế Bảng dữ liệu --- */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 14px 12px;
+  border-bottom: 2px solid #e2e8f0;
+  text-align: center;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+tr:hover td {
+  background-color: #f8fafc; /* Hiệu ứng đổi màu nhẹ khi di chuột qua hàng */
+}
+
+/* --- Thiết kế Ô nhập liệu & Dropdown --- */
+input,
+select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #334155;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: #3b82f6; /* Viền xanh dương khi click vào */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Ô tên công ty chỉ đọc */
+input.tencty {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 500;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+/* --- Thiết kế Các nút bấm --- */
+button {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+button:active {
+  transform: scale(0.96); /* Hiệu ứng lún xuống khi bấm */
+}
+
+/* Nút Tra cứu (Xanh dương) */
+.btn-tracuu {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-tracuu:hover {
+  background-color: #1d4ed8;
+}
+
+/* Nút Lưu (Xanh lá) */
+.btn-luu {
+  background-color: #16a34a;
+  color: white;
+  min-width: 90px;
+}
+
+.btn-luu i.fa-spinner {
+  margin-left: 4px;
+}
+
+.btn-luu:hover {
+  background-color: #15803d;
+}
+
+/* Nút Thêm dòng (Màu cam/Xám đậm) */
+.btn-themdong {
+  background-color: #334155;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin-top: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-themdong:hover {
+  background-color: #1e293b;
+}
+
+button:disabled {
+  background-color: #cbd5e1 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed;
+}
+
+/* Cột chứa nhóm hành động */
+.action-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+/* --- Thông báo Toast thành công --- */
+.toast {
+  visibility: hidden;
+  min-width: 280px;
+  background-color: #0f172a; /* Nền tối sang trọng */
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 14px 24px;
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition:
+    visibility 0s,
+    opacity 0.4s ease-in-out,
+    bottom 0.4s ease-in-out;
+}
+
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 50px;
+}
+
+/* Class này sẽ được thêm vào ô input bằng JavaScript khi phát hiện trống dữ liệu */
+.input-error {
+    border-color: #ef4444 !important; /* Đổi viền sang màu đỏ rực */
+    background-color: #fef2f2 !important; /* Nền hồng đỏ siêu nhạt */
+}
+
+/* ==========================================================================
+   PHẦN CSS BỔ SUNG CHO KHUNG HIỂN THỊ THÔNG TIN CHI TIẾT (VÙNG TÔ ĐỎ)
+   ========================================================================== */
+.detail-card {
+  margin-top: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+  display: none; /* Mặc định ẩn, khi có dữ liệu tra cứu mới hiện */
+  max-width: 100%;
+}
+
+.detail-card.show {
+  display: block;
+  animation: slideDown 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.detail-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-title i {
+  color: #2563eb;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 14px 20px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+}
+
+.detail-value {
+  color: #1f2937;
+  background-color: #f9fafb;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #f3f4f6;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* Hiệu ứng mượt mà khi hiển thị khung */
+@keyframes slideDown {
+  from { 
+    opacity: 0; 
+    transform: translateY(-15px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.popup {
+    display: flex;
+
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    opacity: 0;
+    visibility: hidden;
+
+    /* transition: all 0.25s ease; */
+    transition: all .5s cubic-bezier(.22,1,.36,1);
+}
+
+.popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    width: 750px;
+    max-width: 90vw;
+    max-height: 80vh;
+
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+
+    overflow-y: auto;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+
+    transform: scale(0.85);
+    opacity: 0;
+
+    transition: all .25s ease;
+}
+
+.popup.show .popup-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.close {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#popupBody {
+    white-space: pre-line;
+    line-height: 1.8;
+}
+
+.empty-data {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  font-style: italic;
+}

@@ -1,0 +1,46 @@
+async function traCuu(btn) {
+        const row = btn.closest("tr");
+        const mst = row.querySelector(".mst").value.trim();
+
+        if (!mst) {
+          alert("Vui lòng nhập MST");
+          return;
+        }
+
+        const oTenCty = row.querySelector(".tencty");
+        if (oTenCty) {
+          oTenCty.style.backgroundColor = ""; 
+          oTenCty.style.borderColor = ""; 
+          oTenCty.style.color = ""; 
+          oTenCty.value = "Đang tra cứu..."; 
+        }
+
+        try {
+          // Gọi trực tiếp đến file api.php trên cùng Server PHP (localhost:8000)
+          const response = await fetch("api.php?mst=" + encodeURIComponent(mst));
+          const data = await response.json();
+
+          if (data.success && data.ten_cong_ty) {
+            // 1. Điền tên công ty vào ô input trên hàng
+            row.querySelector(".tencty").value = data.ten_cong_ty;
+
+            // 2. Hiển thị khung thông tin chi tiết (Detail Card) phía dưới bảng
+            const detailCard = document.getElementById("detailCard");
+            if (detailCard) {
+              // Tạm thời điền thông tin (Vì api.php hiện tại chỉ mới trả về tên công ty)
+              document.getElementById("txtNguoiDaiDien").innerText = data.nguoi_dai_dien || "Đang cập nhật...";
+              document.getElementById("txtDiaChi").innerText = data.dia_chi || "Đang cập nhật...";
+              
+              // Thêm class .show để kích hoạt hiệu ứng slideDown mượt mà từ CSS
+              detailCard.classList.add("show");
+            }
+          } else {
+            row.querySelector(".tencty").value = "Không tìm thấy công ty!";
+            document.getElementById("detailCard").classList.remove("show");
+          }
+        } catch (err) {
+          console.error(err);
+          row.querySelector(".tencty").value = "";
+          alert("Tra cứu thất bại (Hãy kiểm tra Server PHP đã bật chưa)");
+        }
+      }
