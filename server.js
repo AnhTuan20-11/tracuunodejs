@@ -279,7 +279,7 @@ return res.json({
 
 // ========================
 // VIEW ENDPOINT - Trả về HTML
-// ========================
+// ==============================================================================
 
 // function renderHTML(data, mst) {
 //   const NA = `<span style="color:#aaa;font-style:italic">Chưa cập nhật</span>`;
@@ -316,6 +316,7 @@ return res.json({
 //     ["🏦 Cơ quan thuế", val(data.co_quan_thue)],
 //     ["📍 Địa chỉ", val(data.dia_chi)],
 //     ["🏭 Ngành nghề chính", val(data.nganh_nghe_chinh)],
+//     ["🏷️ Loại hình DN", val(data.loai_hinh_dn)],
 //     ["👥 Đại diện (chi tiết)", (!data.nguoi_dai_dien_full || data.nguoi_dai_dien_full === "Chưa cập nhật")
 //       ? NA
 //       : `<pre style="margin:0;font-family:inherit;white-space:pre-wrap">${data.nguoi_dai_dien_full}</pre>`],
@@ -421,7 +422,7 @@ app.get("/html", async (req, res) => {
   }
 });
 
-// Form tra cứu
+// Form tra cứu ===========================================================
 // app.get("/view", (req, res) => {
 //   const mst = (req.query.mst || "").trim();
 //   if (!mst) {

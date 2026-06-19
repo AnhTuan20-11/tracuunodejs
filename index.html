@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Báo Cáo</title>
+    <title>Information</title>
 
     <link
       rel="stylesheet"
@@ -20,21 +20,29 @@
   </head>
 
   <body>
-    <h2>Báo Cáo</h2>
+    <div class="topbar">
+      <div class="topbar-icon"><i class="fa-solid fa-file-invoice"></i></div>
+      <div class="topbar-text">
+        <h2>Báo Cáo</h2>
+        <p>Tra cứu mã số thuế &amp; theo dõi xử lý hồ sơ doanh nghiệp</p>
+      </div>
+    </div>
 
+    
     <div id="toastNotification" class="toast">Đã lưu dữ liệu thành công!</div>
 
     <div class="container">
       <table id="tblData">
         <thead>
           <tr>
-            <th style="width: 12%">Mã số thuế</th>
-            <th style="width: 10%">Số điện thoại</th>
-            <th style="width: 32%">Tên công ty</th>
-            <th style="width: 7%">Dịch vụ</th>
-            <th style="width: 9%">Người xử lý</th>
+            <th style="width: 14%">Mã số thuế</th>
+            <th style="width: 12%">Số điện thoại</th>
+            <th style="">Tên công ty</th>
+            <th style="width: 9%">Dịch vụ</th>
+            <th style="width: 8%">Xử lý bởi</th>
             <th style="width: 14%">Vấn đề</th>
-            <th style="width: 16%">Thao tác</th>
+            <th style="width: 11%">Trạng thái</th>
+            <th style="width: 14%">Thao tác</th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +65,11 @@
             </td>
             <td><input value="Tuấn" /></td>
             <td><input placeholder="Ghi chú vấn đề..." /></td>
+            <td>
+              <span class="status-badge status-moi">
+                <i class="fa-solid fa-circle-dot"></i> Mới
+              </span>
+            </td>
             <td>
               <div class="action-group">
                 <button class="btn-tracuu" onclick="traCuu(this)">
@@ -123,10 +136,37 @@
         </div>
       </div>
 
-      <!-- <button class="btn-themdong" onclick="themDong()">+ Thêm dòng mới</button> -->
+      <!-- <button class="btn-themdong" onclick="themDong()">
+        <i class="fa-solid fa-plus"></i> Thêm dòng mới
+      </button> -->
     </div>
 
     <script>
+      // Cập nhật badge Trạng thái của dòng: "moi" | "tracuu" | "luu"
+      function setStatus(row, state) {
+        const badge = row.querySelector(".status-badge");
+        if (!badge) return;
+
+        const config = {
+          moi: { cls: "status-moi", icon: "fa-circle-dot", text: "Mới" },
+          tracuu: {
+            cls: "status-tracuu",
+            icon: "fa-magnifying-glass",
+            text: "Đã tra cứu",
+          },
+          luu: { cls: "status-luu", icon: "fa-circle-check", text: "Đã lưu" },
+          loi: {
+            cls: "status-loi",
+            icon: "fa-circle-xmark",
+            text: "Tra cứu lỗi",
+          },
+        };
+
+        const c = config[state] || config.moi;
+        badge.className = "status-badge " + c.cls;
+        badge.innerHTML = `<i class="fa-solid ${c.icon}"></i> ${c.text}`;
+      }
+
       function themDong() {
         const tbody = document.querySelector("#tblData tbody");
         const row = document.createElement("tr");
@@ -144,6 +184,11 @@
           </td>
           <td><input value="Tuấn"></td>
           <td><input placeholder="Ghi chú vấn đề..."></td>
+          <td>
+            <span class="status-badge status-moi">
+              <i class="fa-solid fa-circle-dot"></i> Mới
+            </span>
+          </td>
           <td>
             <div class="action-group">
               <button class="btn-tracuu" onclick="traCuu(this)">Tra cứu</button>
@@ -178,7 +223,7 @@
           // Gọi trực tiếp đến file api.php trên cùng Server PHP (localhost:8000)
           const response = await fetch("/api?mst=" + encodeURIComponent(mst));
           const data = await response.json();
-          
+
           // check log
           // console.log(
           //   data.from_cache
@@ -213,6 +258,7 @@
             row.querySelector(".tencty").value = data.ten_cong_ty;
             // Đánh dấu đã tra cứu thành công
             row.dataset.tracuu = "true";
+            setStatus(row, "tracuu");
 
             // 2. Điền dữ liệu vào khung chi tiết (Detail Card) phía dưới
             const detailCard = document.getElementById("detailCard");
@@ -324,6 +370,8 @@
           } else {
             row.querySelector(".tencty").value = "Không tìm thấy công ty!";
             row.dataset.tracuu = "false";
+            setStatus(row, "loi");
+            // setStatus(row, "moi");
             document.getElementById("detailCard").classList.remove("show");
           }
         } catch (err) {
@@ -331,6 +379,8 @@
           row.querySelector(".tencty").value = "";
           alert("Tra cứu thất bại (Hãy kiểm tra Server Node.js đã bật chưa)");
           row.dataset.tracuu = "false";
+          setStatus(row, "loi");
+          // setStatus(row, "moi");
         }
       }
 
@@ -402,7 +452,7 @@
 
         btn.disabled = true;
         // btn.innerText = "Đang lưu...";
-        btn.innerHTML = 'Đang lưu <i class="fa-solid fa-spinner fa-spin"></i>';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
         try {
           await fetch(
@@ -419,13 +469,15 @@
 
           const oTenCty = row.querySelector(".tencty");
           if (oTenCty) {
-            oTenCty.style.backgroundColor = "#dcfce7";
+            // oTenCty.style.backgroundColor = "#dcfce7";
             // oTenCty.style.borderColor = "#dcfce7";
             // oTenCty.style.color = "#dcfce7";
           }
+          setStatus(row, "luu");
 
-          const toast = document.getElementById("toastNotification");
-          toast.className = "toast show";
+          // Đã có status rồi
+          // const toast = document.getElementById("toastNotification");
+          // toast.className = "toast show";
 
           setTimeout(function () {
             toast.className = "toast";
@@ -459,6 +511,25 @@
         traCuu(btn);
       });
 
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter") return;
+
+        // Kiểm tra ô đang focus có phải là ô "Vấn đề" không
+        // (ô input thứ 6 trong dòng, không có class đặc biệt)
+        const td = e.target.closest("td");
+        if (!td) return;
+
+        const row = td.closest("tr");
+        if (!row) return;
+
+        // Ô vấn đề là cells[5]
+        if (row.cells[5] && row.cells[5].contains(e.target)) {
+          e.preventDefault();
+          const btn = row.querySelector(".btn-luu");
+          luuSheet(btn);
+        }
+      });
+
       // Khi sửa MST thì phải tra cứu lại
       document.addEventListener("input", function (e) {
         if (!e.target.classList.contains("mst")) return;
@@ -467,6 +538,7 @@
 
         // Chưa tra cứu
         row.dataset.tracuu = "false";
+        setStatus(row, "moi");
 
         // Xóa tên công ty cũ
         row.querySelector(".tencty").value = "";
