@@ -537,3 +537,272 @@ button:disabled {
   color: #b91c1c;
   border-color: #fecaca;
 }
+
+/* ==========================================================================
+   RESPONSIVE — TABLET (≤ 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  body {
+    padding: 0 12px 48px;
+  }
+
+  .topbar {
+    padding: 24px 4px 18px;
+  }
+
+  .topbar-text h2 {
+    font-size: 19px;
+  }
+
+  .container {
+    padding: 6px;
+    border-radius: var(--radius-md);
+  }
+
+  table {
+    min-width: 860px;
+  }
+
+  th, td {
+    padding: 10px 10px;
+    font-size: 12.5px;
+  }
+
+  input, select {
+    padding: 8px 10px;
+    font-size: 12.5px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .action-group {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .action-group button {
+    width: 100%;
+  }
+
+  .detail-grid {
+    grid-template-columns: 130px 1fr;
+    gap: 10px 14px;
+  }
+
+  .detail-card {
+    padding: 20px 20px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE — MOBILE (≤ 640px)
+   ========================================================================== */
+@media (max-width: 640px) {
+  body {
+    padding: 0 8px 48px;
+  }
+
+  /* --- Topbar --- */
+  .topbar {
+    padding: 18px 2px 14px;
+    gap: 10px;
+  }
+
+  .topbar .topbar-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .topbar-text h2 {
+    font-size: 16px;
+  }
+
+  .topbar-text p {
+    font-size: 12px;
+  }
+
+  /* --- Container --- */
+  .container {
+    padding: 10px;
+    border-radius: var(--radius-md);
+    overflow-x: unset;
+  }
+
+  /* ==============================================
+     BẢNG TRÊN MOBILE
+     Chỉ hiện: MST | Trạng thái | Nút Tra cứu
+     Ẩn: SĐT, Tên CTY, Dịch vụ, Xử lý bởi,
+         Vấn đề, Nút Lưu
+  ============================================== */
+
+  /* Ẩn thead */
+  #tblData thead {
+    display: none;
+  }
+
+  /* Chuyển bảng → block */
+  #tblData,
+  #tblData tbody {
+    display: block;
+    width: 100%;
+  }
+
+  /* Phá vỡ min-width từ desktop */
+  #tblData {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Phá vỡ cấu trúc table mặc định */
+  #tblData,
+  #tblData tbody,
+  #tblData tr,
+  #tblData td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Mỗi tr → card 2 hàng:
+     Hàng 1: ô MST (full width)
+     Hàng 2: badge Trạng thái + nút Tra cứu */
+  #tblData tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  #tblData tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Ẩn tất cả td mặc định */
+  #tblData td {
+    display: none;
+    border-bottom: none;
+    padding: 0;
+  }
+
+  /* Hàng 1: ô MST — chiếm full width */
+  #tblData td:nth-child(1) {
+    display: block;
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  /* Hàng 2: Badge + Nút cùng 1 dòng */
+  #tblData td:nth-child(7) {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  #tblData td:nth-child(8) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    width: auto;
+  }
+
+  /* Ẩn nút Lưu, chỉ giữ nút Tra cứu */
+  .btn-luu {
+    display: none;
+  }
+
+  /* Input MST full width */
+  #tblData td:nth-child(1) input {
+    width: 100%;
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+
+  .status-badge {
+    padding: 4px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .btn-tracuu {
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* --- Detail Card --- */
+  .detail-card {
+    margin-top: 14px;
+    padding: 16px 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .detail-title {
+    font-size: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    gap: 7px;
+  }
+
+  /* Chuyển grid 2 cột → 1 cột dọc trên mobile */
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 4px 0;
+  }
+
+  .detail-label {
+    font-size: 11px;
+    color: var(--ink-500);
+    margin-top: 10px;
+    margin-bottom: 2px;
+  }
+
+  .detail-label:first-child {
+    margin-top: 0;
+  }
+
+  .detail-value {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* --- Popup người đại diện --- */
+  .popup-content {
+    width: 95vw;
+    max-height: 85vh;
+    padding: 18px 16px;
+    border-radius: var(--radius-md);
+  }
+
+  .popup-content h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  #popupBody {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* --- Toast --- */
+  .toast {
+    min-width: 0;
+    width: calc(100vw - 32px);
+    font-size: 13.5px;
+    padding: 12px 16px;
+    bottom: 24px;
+  }
+
+  .toast.show {
+    bottom: 32px;
+  }
+}
