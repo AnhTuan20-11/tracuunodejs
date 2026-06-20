@@ -190,17 +190,21 @@ console.log("🌐 API FETCH:", mst);
         ten_cong_ty: tenCongTy,
         nguoi_dai_dien: nguoiDaiDien,
         nguoi_dai_dien_full: nguoiDaiDienFull,
-        // dia_chi: getByLabel("Địa chỉ"),
-        dia_chi: (() => {
-          const rows = document.querySelectorAll("tr");
-          for (const row of rows) {
-            const cells = row.querySelectorAll("td");
-            if (cells.length >= 2 && cells[0].textContent.trim().replace(/\s+/g, " ") === "Địa chỉ") {
-              return cells[1].textContent.trim() || DEFAULT;
-            }
-          }
-          return DEFAULT;
-        })(),
+
+        //Địa chỉ thuế
+        dia_chi: getByLabel("Địa chỉ"),
+        
+        // địa chỉ
+        // dia_chi: (() => {
+        //   const rows = document.querySelectorAll("tr");
+        //   for (const row of rows) {
+        //     const cells = row.querySelectorAll("td");
+        //     if (cells.length >= 2 && cells[0].textContent.trim().replace(/\s+/g, " ") === "Địa chỉ") {
+        //       return cells[1].textContent.trim() || DEFAULT;
+        //     }
+        //   }
+        //   return DEFAULT;
+        // })(),
         so_dien_thoai: soDienThoai,
         ngay_hoat_dong: getByLabel("Ngày hoạt động"),
         ten_giao_dich: getByLabel("Tên quốc tế"),

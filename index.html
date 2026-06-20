@@ -24,11 +24,10 @@
       <div class="topbar-icon"><i class="fa-solid fa-file-invoice"></i></div>
       <div class="topbar-text">
         <h2>Báo Cáo</h2>
-        <p>Tra cứu mã số thuế &amp; theo dõi xử lý hồ sơ doanh nghiệp</p>
+        <p>Tra cứu mã số thuế</p>
       </div>
     </div>
 
-    
     <div id="toastNotification" class="toast">Đã lưu dữ liệu thành công!</div>
 
     <div class="container">
@@ -364,6 +363,8 @@
                 });
 
                 // Hiển thị khung Detail Card mượt mà lên màn hình
+                detailCard.classList.remove("show");
+                void detailCard.offsetHeight; // force reflow — bắt browser "vẽ lại" 1 frame
                 detailCard.classList.add("show");
               }
             }
